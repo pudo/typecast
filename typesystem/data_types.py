@@ -1,8 +1,5 @@
 from datetime import datetime, date
-from typesystem.util import date_parse
-
-
-BOOL_TRUISH = ['t', 'yes', 'y', '1', 'true']
+from typesystem.util import date_parse, bool_parse
 
 
 class DataException(Exception):
@@ -76,7 +73,7 @@ class Boolean(DataType):
     def deserialize(self, value):
         if isinstance(value, bool):
             return value
-        return value.lower() in BOOL_TRUISH
+        return bool_parse(value)
 
 
 class Float(DataType):

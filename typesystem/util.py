@@ -9,6 +9,11 @@ def date_parse(text):
         return None
 
 
+def bool_parse(text):
+    text = text.lower().strip()
+    return text in ['t', 'yes', 'y', '1', 'true']
+
+
 def is_list(obj):
     return isinstance(obj, (list, tuple, set))
 
