@@ -1,19 +1,5 @@
 from datetime import datetime, date
-from typesystem.util import date_parse, bool_parse
-
-
-class DataException(Exception):
-
-    def __init(self, data_type, value, message=None, exc=None):
-        self.data_type = data_type
-        self.value = value
-        self.exc = exc
-        if message is None:
-            if hasattr(exc, 'message'):
-                message = exc.message
-            elif exc is not None:
-                message = unicode(exc)
-        self.message = message
+from typesystem.util import date_parse, bool_parse, TypeException
 
 
 class DataType(object):
@@ -33,20 +19,20 @@ class DataType(object):
         try:
             obj = self.deserialize_safe(value)
             return self.serialize(obj)
-        except DataException:
+        except TypeException:
             raise
         except Exception, e:
-            raise DataException(self, value, e)
+            raise TypeException(self, value, e)
 
     def deserialize_safe(self, value):
         if value is None:
             return None
         try:
             return self.deserialize(value)
-        except DataException:
+        except TypeException:
             raise
         except Exception, e:
-            raise DataException(self, value, e)
+            raise TypeException(self, value, e)
 
     def __unicode__(self):
         return self.__class__.__name__.lower()

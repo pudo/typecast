@@ -39,3 +39,17 @@ class SchemaObject(object):
             elif normalize(self.label).startswith(prefix):
                 return True
         return False
+
+
+class TypeException(Exception):
+
+    def __init(self, type_, value, message=None, exc=None):
+        self.type = type_
+        self.value = value
+        self.exc = exc
+        if message is None:
+            if hasattr(exc, 'message'):
+                message = exc.message
+            elif exc is not None:
+                message = unicode(exc)
+        self.message = message

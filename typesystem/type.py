@@ -7,7 +7,8 @@ class Type(SchemaObject):
     """ A type defines a node in the graph to be a member of a
     particular class of thing, e.g. a company or a person. """
 
-    def __init__(self, name, data):
+    def __init__(self, registry, name, data):
+        self.registry = registry
         super(Type, self).__init__(name, data.get('label'),
                                    abstract=data.get('abstract', False))
         self._parent = data.get('parent')
@@ -20,20 +21,20 @@ class Type(SchemaObject):
 
     @property
     def parent(self):
-        return types[self._parent]
+        return self.registry[self._parent]
 
     @property
     def parents(self):
         """ This includes the type itself. """
         if self.root:
             return set([self])
-        return types[self._parent].parents.union([self])
+        return self.registry[self._parent].parents.union([self])
 
     @property
     def subtypes(self):
         """ This includes the type itself. """
         subtypes = set([self])
-        for subtype in types:
+        for subtype in self.registry:
             if subtype._parent == self.name:
                 subtypes.update(subtype.subtypes)
         return subtypes
@@ -49,9 +50,9 @@ class Type(SchemaObject):
             self._attributes = Schema(Attribute)
             if not self.root:
                 items = self.parent.attributes.items()
-                self._attributes._items.update(items)
+                self._attributes.update(items)
             for name, data in self._attr_data.items():
-                self._attributes._items[name] = Attribute(self, name, data)
+                self._attributes[name] = Attribute(self, name, data)
         return self._attributes
 
     def to_dict(self):
