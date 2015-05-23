@@ -10,8 +10,7 @@ def date_parse(text):
 
 
 def bool_parse(text):
-    text = text.lower().strip()
-    return text in ['t', 'yes', 'y', '1', 'true']
+    return text.lower().strip() in ['t', 'yes', 'y', '1', 'true']
 
 
 def is_list(obj):

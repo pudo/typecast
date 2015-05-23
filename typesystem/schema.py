@@ -2,12 +2,21 @@ from collections import MutableMapping
 
 
 class Schema(MutableMapping):
-    """ A simple proxy object so you can request
-    ``types.Company`` or ``attributes.label``. """
+    """ A simple proxy object so you can request. """
 
     def __init__(self, cls, items=None):
         self.cls = cls
         self._items = items or {}
+        self._qualified = None
+
+    @property
+    def qualified(self):
+        if self._qualified is None:
+            self._qualified = {}
+            for type_ in self:
+                for attr in type_.attributes:
+                    self._qualified[attr.qname] = attr
+        return self._qualified
 
     def __getitem__(self, name):
         return self._items.get(name)
