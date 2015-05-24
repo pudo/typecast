@@ -24,6 +24,10 @@ class Registry(dict):
 
 class TypeRegistry(Registry):
 
+    def __init__(self):
+        from typesystem.type import Type
+        self.cls = Type
+
     @property
     def qualified(self):
         _qualified = {}

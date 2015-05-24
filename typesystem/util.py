@@ -21,7 +21,7 @@ class SchemaObject(object):
 
     def __init__(self, name, label, abstract=False):
         self.name = name
-        self.label = label
+        self.label = label or name
         self.abstract = abstract
 
     def __eq__(self, other):
@@ -40,10 +40,20 @@ class SchemaObject(object):
                 return True
         return False
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'label': self.label,
+            'abstract': self.abstract
+        }
+
+    def to_index_dict(self):
+        return self.name
+
 
 class TypeException(Exception):
 
-    def __init(self, type_, value, message=None, exc=None):
+    def __init__(self, type_, value, message=None, exc=None):
         self.type = type_
         self.value = value
         self.exc = exc
