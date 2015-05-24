@@ -4,9 +4,6 @@ from typesystem.util import date_parse, bool_parse, TypeException
 
 class DataType(object):
 
-    def __init__(self, attribute):
-        self.attribute = attribute
-
     def serialize(self, value):
         return value
 

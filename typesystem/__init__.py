@@ -3,7 +3,7 @@ import yaml
 from typesystem.type import Type
 from typesystem.attribute import Attribute # noqa
 from typesystem.registry import TypeRegistry
-from typesystem.util import DataException # noqa
+from typesystem.util import TypeException # noqa
 
 
 def load(path):

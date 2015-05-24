@@ -9,17 +9,16 @@ class Attribute(SchemaObject):
     def __init__(self, type_, name, data):
         super(Attribute, self).__init__(name, data.get('label'))
         self.qname = '%s:%s' % (type_.name, name)
-        self.data_type = data.get('data_type')
+        self.type = data.get('type')
         self.phrase = data.get('phrase', self.label)
         self.many = data.get('many', False)
 
     @property
     def converter(self):
         """ Instantiate a type converter for this attribute. """
-        if self.data_type not in DATA_TYPES:
-            raise TypeError('Invalid data type: %s'
-                            % self.data_type)
-        return DATA_TYPES[self.data_type]
+        if self.type not in DATA_TYPES:
+            raise TypeError('Invalid data type: %s' % self.type)
+        return DATA_TYPES[self.type]()
 
     def to_dict(self):
         return {
@@ -28,14 +27,14 @@ class Attribute(SchemaObject):
             'label': self.label,
             'phrase': self.phrase,
             'many': self.many,
-            'data_type': self.data_type
+            'type': self.type
         }
 
     def to_index_dict(self):
         return self.name
 
     def __repr__(self):
-        return '<Attribute(%r,%r)>' % (self.name, self.data_type)
+        return '<Attribute(%r,%r)>' % (self.name, self.type)
 
     def __eq__(self, other):
         if hasattr(other, 'name'):

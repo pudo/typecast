@@ -1,5 +1,5 @@
 from typesystem.util import SchemaObject
-from typesystem.schema import Schema
+from typesystem.registry import Registry
 from typesystem.attribute import Attribute
 
 
@@ -47,7 +47,7 @@ class Type(SchemaObject):
     @property
     def attributes(self):
         if self._attributes is None:
-            self._attributes = Schema(Attribute)
+            self._attributes = Registry(Attribute)
             if not self.root:
                 items = self.parent.attributes.items()
                 self._attributes.update(items)
