@@ -2,16 +2,19 @@ from typesystem.registry import Registry
 from typesystem.attribute import Attribute
 from typesystem.type import Type
 
+null_loader = lambda x: x
+
 
 class EntityType(Type):
     """ An entity type defines a node in the graph to be a member of a
-    particular class of thing, e.g. a company or a person. """
+    particular class of thing, e.g. a company or a person. Unlike a
+    ``ValueType``, entities have attributes of a specified type. """
 
     def __init__(self, registry, name, data, entity_loader):
         super(EntityType, self).__init__(registry, name, data)
         self._attr_data = data.get('attributes', {})
         self._attributes = None
-        self._entity_loader = entity_loader
+        self._entity_loader = entity_loader or null_loader
 
     @property
     def attributes(self):

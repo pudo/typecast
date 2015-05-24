@@ -1,0 +1,33 @@
+types:
+    Object:
+        label: "Object"
+        abstract: true
+        attributes:
+            type:
+                label: "Type"
+                type: type
+                phrase: "is a"
+            label:
+                label: "Label"
+                type: string
+                phrase: "is called"
+
+    Person:
+        label: "Person"
+        parent: Object
+        attributes:
+            email:
+                label: "E-Mail"
+                type: string
+            gender:
+                label: "Gender"
+                type: string
+            birth_date:
+                label: "Birth date"
+                type: date
+            death_date:
+                label: "Death date"
+                type: date
+            mother:
+                label: "Biological mother"
+                type: Person

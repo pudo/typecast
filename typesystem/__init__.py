@@ -20,7 +20,7 @@ def create_registry():
     return types
 
 
-def load(path, entity_loader):
+def load_yaml(path, entity_loader=None):
     """ Load types and attributes from a ``.yaml`` file specified. """
     types = create_registry()
     with open(path, 'rb') as fh:
