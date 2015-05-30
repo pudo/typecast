@@ -15,11 +15,8 @@ class Registry(dict):
         if name in self:
             return self[name]
 
-    def __iter__(self):
-        return iter(self.values())
-
     def to_dict(self):
-        return self
+        return dict(self.items())
 
 
 class TypeRegistry(Registry):
@@ -32,6 +29,7 @@ class TypeRegistry(Registry):
     def qualified(self):
         _qualified = {}
         for type_ in self.values():
-            for attr in type_.attributes.values():
-                _qualified[attr.qname] = attr
+            if hasattr(type_, 'attributes'):
+                for attr in type_.attributes.values():
+                    _qualified[attr.qname] = attr
         return _qualified

@@ -5,6 +5,7 @@ from typesystem.type import Type
 
 class ValueType(Type):
     """ Value types are data primitives. """
+    is_value = True
 
     def __init__(self, registry):
         name = self.__class__.__name__.replace('Value', '').lower()

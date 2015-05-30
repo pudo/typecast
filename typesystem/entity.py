@@ -9,6 +9,7 @@ class EntityType(Type):
     """ An entity type defines a node in the graph to be a member of a
     particular class of thing, e.g. a company or a person. Unlike a
     ``ValueType``, entities have attributes of a specified type. """
+    is_entity = True
 
     def __init__(self, registry, name, data, entity_loader):
         super(EntityType, self).__init__(registry, name, data)

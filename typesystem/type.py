@@ -4,6 +4,8 @@ from typesystem.util import SchemaObject, TypeException
 class Type(SchemaObject):
     """ A type can be a primitive value (such as a string or a number) or a
     complex object, such as the data structure for a company or person. """
+    is_entity = False
+    is_value = False
 
     def __init__(self, registry, name, data):
         self.registry = registry

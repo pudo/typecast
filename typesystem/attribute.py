@@ -15,7 +15,7 @@ class Attribute(SchemaObject):
 
     @property
     def type(self):
-        return self._parent.registry[self.type]
+        return self._parent.registry[self._type]
 
     def to_dict(self):
         return {

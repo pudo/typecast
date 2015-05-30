@@ -2,8 +2,8 @@ import yaml
 
 from typesystem.attribute import Attribute # noqa
 from typesystem.registry import TypeRegistry
-from typesystem.value import StringValue, BooleanValue, IntegerValue, FloatValue
-from typesystem.value import DateTimeValue, DateValue, TypeValue
+from typesystem.value import StringValue, BooleanValue, IntegerValue
+from typesystem.value import DateTimeValue, DateValue, TypeValue, FloatValue
 from typesystem.entity import EntityType
 from typesystem.util import TypeException # noqa
 
