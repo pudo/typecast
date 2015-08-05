@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='typesystem',
-    version='0.1',
-    description="An abstract type system",
+    name='typecast',
+    version='0.2',
+    description="Convert types in source data.",
     long_description="",
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -17,7 +17,7 @@ setup(
     keywords='types rdf',
     author='Friedrich Lindenberg',
     author_email='friedrich@pudo.org',
-    url='http://github.com/granoproject/typesystem',
+    url='http://github.com/pudo/typecast',
     license='MIT',
     packages=find_packages(exclude=['ez_setup', 'examples', 'test']),
     namespace_packages=[],
@@ -26,9 +26,11 @@ setup(
     zip_safe=False,
     test_suite='nose.collector',
     install_requires=[
-        'python-dateutil==1.5',
-        'normality>=0.2.2'
+        'python-dateutil>=1.5'
     ],
-    tests_require=[],
+    tests_require=[
+        'nose',
+        'coverage'
+    ],
     entry_points={}
 )

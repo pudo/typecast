@@ -1,76 +1,30 @@
-# typesystem
+# typecast
 
-An abstract type system, inspired by Freebase. ``typesystem`` can be
-used to describe a type hierarchy of classes with attributes and
-inheritance.
+This light-weight library contains a set of type converters commonly used to
+parse string-typed values into more specific types, such as numbers, booleans
+or dates. A typical use case might be converting values from HTTP query strings
+or CSV files.
 
-This was factored out of ``nomenklatura`` to become re-usable. See the [MQL
-documentation](https://developers.google.com/freebase/mql/ch02#id2944699)
-for the intended functionality.
+The benefits of using this library include:
+
+* Packaged handling of type conversions, e.g. for JSON Schema or JTS
+* A consistent system of exceptions (catch ``ValueError`` and all is forgiven).
 
 ## Example usage
 
-``typesystem`` is used to manage and enforce type hierarchies that are generated dynamically (from a schema definition file). A Python snippet using the library could look like this:
+``typecast`` can easily be included in many applications. A Python snippet
+using the library could look like this:
 
 ```python
-import typesystem
+import typecast
 
-types = typesystem.load_yaml('example.yaml')
-person = types.Person
-
-# Attribute inheritance:
-assert person.attributes.type.qname == 'Object:type'
-
-for attribute in person.attributes:
-    print attribute.name, attribute.type
 ```
-
-### Schema definition
-
-```yaml
-types:
-    Object:
-        label: "Object"
-        abstract: true
-        attributes:
-            type:
-                label: "Type"
-                type: type
-                phrase: "is a"
-            label:
-                label: "Label"
-                type: string
-                phrase: "is called"
-
-    Person:
-        label: "Person"
-        parent: Object
-        attributes:
-            email:
-                label: "E-Mail"
-                type: string
-            gender:
-                label: "Gender"
-                type: string
-            birth_date:
-                label: "Birth date"
-                type: date
-            death_date:
-                label: "Death date"
-                type: date
-            mother:
-                label: "Biological mother"
-                type: Person
-```
-
-## Value data types
-
-The type system currently defines the following core value data types (primitives): ``string``, ``integer``, ``float``, ``boolean``, ``date``, ``datetime`` and ``type``.
-
 
 ## Tests
 
+The goal is to have a high-nineties test coverage, and to collect as many odd
+fringe cases as possible.
+
 ```bash
-pip install nose coverage
-nosetests --with-coverage --cover-package=typesystem --cover-erase
+$ make test
 ```
