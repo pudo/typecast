@@ -17,7 +17,7 @@ class Integer(Converter):
     """ Integer """
     result_type = int
 
-    def deserialize(self, value):
+    def _cast(self, value, **opts):
         try:
             value = float(value)
         except:
@@ -34,17 +34,21 @@ class Boolean(Converter):
     but a custom set of values can be optionally provided. """
     result_type = bool
     true_values = ('t', 'yes', 'y', '1', 'true', 'aye')
-    false_values = ('f', 'no', 'n', '0', 'flase', 'nay')
+    false_values = ('f', 'no', 'n', '0', 'false', 'nay')
 
-    def serialize(self, value):
+    def _stringify(self, value, **opts):
         return six.text_type(value).lower()
 
-    def deserialize(self, value):
+    def _cast(self, value, true_values=None, false_values=None, **opts):
         if isinstance(value, six.string_types):
             value = value.lower().strip()
-            if value in self.true_values:
+
+            true_values = true_values or self.true_values
+            if value in true_values:
                 return True
-            if value in self.false_values:
+
+            false_values = false_values or self.false_values
+            if value in false_values:
                 return False
 
 
@@ -52,7 +56,7 @@ class Float(Converter):
     """ Floating-point number """
     result_type = float
 
-    def deserialize(self, value):
+    def _cast(self, value, **opts):
         return float(value)
 
 
@@ -60,7 +64,10 @@ class Decimal(Converter):
     """ Decimal number, ``decimal.Decimal`` or float numbers. """
     result_type = decimal.Decimal
 
-    def deserialize(self, value):
+    def _stringify(self, value, **opts):
+        return '{0:.7f}'.format(value)
+
+    def _cast(self, value, **opts):
         try:
             return decimal.Decimal(value)
         except:

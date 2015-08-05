@@ -7,34 +7,39 @@ class Converter(object):
     result_type = None
     allow_empty = False
 
-    def serialize(self, value):
+    def _stringify(self, value, **opts):
         return six.text_type(value)
 
-    def deserialize(self, value):
+    def _cast(self, value, **opts):
         return six.text_type(value)
 
     def _is_null(self, value):
+        """ Check if an incoming value is ``None`` or the empty string. """
         if isinstance(value, six.string_types):
             if '' == value.strip() and not self.allow_empty:
-                return False
+                return True
         return value is None
 
-    def serialize_safe(self, value):
+    def cast(self, value, **opts):
+        """ Convert the given value to the target type, or return ``None`` if
+        the value is empty. If an error occurs, raise a ``ConverterError``. """
         if self._is_null(value):
             return None
         try:
-            return self.serialize(obj)
+            return self._cast(value, **opts)
         except Exception, e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)
             e.converter = self.__class__
             raise e
 
-    def deserialize_safe(self, value):
+    def stringify(self, value, **opts):
+        """ Inverse of conversion: generate a string representation of the data
+        that is guaranteed to be parseable by this library. """
         if self._is_null(value):
             return None
         try:
-            return self.deserialize(value)
+            return self._stringify(value, **opts)
         except Exception, e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)

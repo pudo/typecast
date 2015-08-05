@@ -6,27 +6,27 @@ from typecast.converter import Converter, ConverterError
 
 class DateTime(Converter):
     """ Timestamp """
+    result_type = datetime
 
-    def serialize(self, value):
-        return value.isoformat() if isinstance(value, datetime) else value
+    def _stringify(self, value, **opts):
+        return value.isoformat()
 
-    def deserialize(self, value):
-        if isinstance(value, (date, datetime)):
-            return value
-        try:
-            return dateutil.parser.parse(value)
-        except (TypeError, ValueError, AttributeError):
-            raise ConverterError('Invalid date: %r' % text)
+    def _cast(self, value, format=None, **opts):
+        """ Optionally apply a format string. """
+        if format is not None:
+            return datetime.strptime(value, format)
+        return dateutil.parser.parse(value)
 
 
 class Date(DateTime):
     """ Date """
+    result_type = date
 
-    def serialize(self, value):
+    def _stringify(self, value, **opts):
         if isinstance(value, datetime):
             value = value.date()
-        return value.isoformat() if isinstance(value, date) else value
+        return value.isoformat()
 
-    def deserialize(self, value):
-        dt = super(Date, self).deserialize(value)
+    def _cast(self, value, **opts):
+        dt = super(Date, self)._cast(value, **opts)
         return dt.date() if isinstance(dt, datetime) else dt

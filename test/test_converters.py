@@ -1,4 +1,5 @@
 import unittest
+import decimal
 from datetime import datetime
 
 from typecast import ConverterError
@@ -11,55 +12,75 @@ class ConvertersUnitTest(unittest.TestCase):
         pass
 
     def test_none(self):
-        type_ = value.String()
+        conv = value.String()
         text = None
-        assert type_.serialize(text) == text, type_.serialize(text)
-        assert type_.deserialize(text) == text, type_.deserialize(text)
+        assert conv.stringify(text) == text, conv.stringify(text)
+        assert conv.cast(text) == text, conv.cast(text)
 
     def test_string(self):
-        type_ = value.String()
+        conv = value.String()
         text = 'This is a string'
-        assert type_.serialize(text) == text, type_.serialize(text)
-        assert type_.deserialize(text) == text, type_.deserialize(text)
+        assert conv.stringify(text) == text, conv.stringify(text)
+        assert conv.cast(text) == text, conv.cast(text)
+
+    def test_integer(self):
+        conv = value.Integer()
+        num, text = 7842, '7842'
+        assert conv.stringify(num) == text, conv.stringify(num)
+        assert conv.cast(text) == num, conv.cast(text)
 
     def test_float(self):
-        type_ = value.Float()
+        conv = value.Float()
         num, text = 2.1, '2.1'
-        assert type_.serialize(num) == text, type_.serialize(num)
-        assert type_.deserialize(text) == num, type_.deserialize(text)
+        assert conv.stringify(num) == text, conv.stringify(num)
+        assert conv.cast(text) == num, conv.cast(text)
 
         with self.assertRaises(ConverterError):
-            type_.deserialize_safe('banana')
+            conv.cast('banana')
+
+    def test_decimal(self):
+        conv = value.Decimal()
+        num, text = decimal.Decimal(2.1), '2.1'
+        assert float(conv.stringify(num)) == float(text), conv.stringify(num)
+        val = float(conv.cast(text) - num)
+        assert val < 0.1, (conv.cast(text), val)
+
+        with self.assertRaises(ConverterError):
+            conv.cast('banana')
 
     def test_boolean(self):
-        type_ = value.Boolean()
+        conv = value.Boolean()
         val, text = True, 'true'
-        assert type_.serialize(val) == text, type_.serialize(val)
-        assert type_.deserialize(text) == val, type_.deserialize(text)
-        assert type_.deserialize_safe(None) is None, \
-            type_.deserialize_safe(None)
+        assert conv.stringify(val) == text, conv.stringify(val)
+        assert conv.cast(text) == val, conv.cast(text)
+        assert conv.cast(None) is None, conv.cast(None)
+
+        conv = value.Boolean()
+        val, text = False, 'false'
+        assert conv.stringify(val) == text, conv.stringify(val)
+        assert conv.cast(text) == val, conv.cast(text)
 
     def test_date(self):
-        type_ = date.Date()
-        val = datetime(2015, 5, 23)
-        text = val.date().isoformat()
-        assert type_.serialize(val) == text, type_.serialize(val)
-        assert type_.deserialize(text).isoformat() == text, \
-            type_.deserialize(text)
+        conv = date.Date()
+        val = datetime(2015, 5, 23).date()
+        text = val.isoformat()
+        assert conv.stringify(val) == text, conv.stringify(val)
+        assert conv.cast(text).isoformat() == text, \
+            (conv.cast(text), conv.cast(text).isoformat())
 
         with self.assertRaises(ConverterError):
-            type_.deserialize_safe('banana')
+            conv.cast('banana')
 
         with self.assertRaises(ConverterError):
-            type_.serialize_safe('banana')
+            conv.stringify('banana')
 
     def test_datetime(self):
-        type_ = date.DateTime()
+        conv = date.DateTime()
         val = datetime.utcnow()
         text = val.isoformat()
-        assert type_.serialize(val) == text, type_.serialize(val)
-        assert type_.deserialize(text).isoformat() == text, \
-            type_.deserialize(text)
+        assert conv.stringify(val) == text, conv.stringify(val)
+        assert conv.cast(text).isoformat() == text, \
+            conv.cast(text)
 
         with self.assertRaises(ConverterError):
-            type_.deserialize_safe('banana')
+            conv.cast('banana')
