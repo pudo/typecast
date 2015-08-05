@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from typesystem import create_registry, TypeException
+from typecast import create_registry, TypeException
 
 
 class ValueTypesUnitTest(unittest.TestCase):
