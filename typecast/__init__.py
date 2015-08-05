@@ -1,6 +1,5 @@
-from typecast.value import StringValue, BooleanValue, IntegerValue
-from typecast.value import DateTimeValue, DateValue, TypeValue, FloatValue
-from typecast.util import TypeException # noqa
+from typecast.value import String, Boolean, Integer, Float, Decimal
+from typecast.date import DateTime, Date
+from typecast.converter import ConverterError  # noqa
 
-VALUE_TYPES = [StringValue, BooleanValue, IntegerValue, FloatValue,
-               DateTimeValue, DateValue, TypeValue]
+CONVERTERS = [String, Boolean, Integer, Float, Decimal, DateTime, Date]

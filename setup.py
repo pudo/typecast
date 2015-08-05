@@ -27,7 +27,8 @@ setup(
     test_suite='nose.collector',
     install_requires=[
         'python-dateutil>=1.5',
-        'normality'
+        'normality',
+        'six'
     ],
     tests_require=[
         'nose',

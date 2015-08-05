@@ -5,10 +5,10 @@ parse string-typed values into more specific types, such as numbers, booleans
 or dates. A typical use case might be converting values from HTTP query strings
 or CSV files.
 
-The benefits of using this library include:
-
-* Packaged handling of type conversions, e.g. for JSON Schema or JTS
-* A consistent system of exceptions (catch ``ValueError`` and all is forgiven).
+The benefits of using this library include a well-tested handling of type
+conversions, e.g. for JSON Schema or JTS. Further, a consistent system of
+exceptions (catch ``ConverterError`` and all is forgiven) makes it easier
+to handle data errors.
 
 ## Example usage
 

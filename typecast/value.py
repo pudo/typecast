@@ -1,68 +1,70 @@
+import six
+import sys
+import decimal
+import locale
 from datetime import datetime, date
 
-from typecast.util import date_parse, bool_parse, TypeException
-from typecast.converter import Converter
+from typecast.converter import Converter, ConverterError
 
 
 class String(Converter):
     """ String """
+    result_type = six.text_type
+    allow_empty = True
 
 
 class Integer(Converter):
     """ Integer """
-
-    def serialize(self, value):
-        return unicode(value)
+    result_type = int
 
     def deserialize(self, value):
-        return int(value)
+        try:
+            value = float(value)
+        except:
+            return locale.atoi(value)
+
+        if value.is_integer():
+            return int(value)
+        else:
+            raise ConverterError('Invalid integer: %r' % value)
 
 
 class Boolean(Converter):
-    """ Boolean """
+    """ A boolean field. Matches true/false, yes/no and 0/1 by default,
+    but a custom set of values can be optionally provided. """
+    result_type = bool
+    true_values = ('t', 'yes', 'y', '1', 'true', 'aye')
+    false_values = ('f', 'no', 'n', '0', 'flase', 'nay')
 
     def serialize(self, value):
-        return unicode(value).lower()
+        return six.text_type(value).lower()
 
     def deserialize(self, value):
-        if isinstance(value, bool):
-            return value
-        return bool_parse(value)
+        if isinstance(value, six.string_types):
+            value = value.lower().strip()
+            if value in self.true_values:
+                return True
+            if value in self.false_values:
+                return False
 
 
 class Float(Converter):
     """ Floating-point number """
-
-    def serialize(self, value):
-        return unicode(value)
+    result_type = float
 
     def deserialize(self, value):
         return float(value)
 
 
-class DateTime(Converter):
-    """ Timestamp """
-
-    def serialize(self, value):
-        return value.isoformat() if isinstance(value, datetime) else value
+class Decimal(Converter):
+    """ Decimal number, ``decimal.Decimal`` or float numbers. """
+    result_type = decimal.Decimal
 
     def deserialize(self, value):
-        if isinstance(value, (date, datetime)):
-            return value
-        dt = date_parse(value)
-        if dt is None:
-            raise TypeException(self, value, message='Invalid datetime value.')
-        return dt
-
-
-class Date(DateTimeValue):
-    """ Date """
-
-    def serialize(self, value):
-        if isinstance(value, datetime):
-            value = value.date()
-        return value.isoformat() if isinstance(value, date) else value
-
-    def deserialize(self, value):
-        dt = super(Date, self).deserialize(value)
-        return dt.date() if isinstance(dt, datetime) else dt
+        try:
+            return decimal.Decimal(value)
+        except:
+            value = locale.atof(value)
+            if sys.version_info < (2, 7):
+                value = str(value)
+            return decimal.Decimal(value)
