@@ -14,10 +14,6 @@ def bool_parse(text):
     return normalize(text) in ['t', 'yes', 'y', '1', 'true', 'aye']
 
 
-def is_list(obj):
-    return isinstance(obj, (list, tuple, set))
-
-
 class TypeException(Exception):
 
     def __init__(self, type_, value, message=None, exc=None):

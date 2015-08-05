@@ -1,24 +1,14 @@
 from datetime import datetime, date
 
 from typecast.util import date_parse, bool_parse, TypeException
-from typecast.type import Type
+from typecast.converter import Converter
 
 
-class ValueType(Type):
-    """ Value types are data primitives. """
-    is_value = True
-
-    def __init__(self, registry):
-        name = self.__class__.__name__.replace('Value', '').lower()
-        label = self.__doc__.strip()
-        super(ValueType, self).__init__(registry, name, {'label': label})
-
-
-class StringValue(ValueType):
+class String(Converter):
     """ String """
 
 
-class IntegerValue(ValueType):
+class Integer(Converter):
     """ Integer """
 
     def serialize(self, value):
@@ -28,7 +18,7 @@ class IntegerValue(ValueType):
         return int(value)
 
 
-class BooleanValue(ValueType):
+class Boolean(Converter):
     """ Boolean """
 
     def serialize(self, value):
@@ -40,7 +30,7 @@ class BooleanValue(ValueType):
         return bool_parse(value)
 
 
-class FloatValue(ValueType):
+class Float(Converter):
     """ Floating-point number """
 
     def serialize(self, value):
@@ -50,7 +40,7 @@ class FloatValue(ValueType):
         return float(value)
 
 
-class DateTimeValue(ValueType):
+class DateTime(Converter):
     """ Timestamp """
 
     def serialize(self, value):
@@ -65,7 +55,7 @@ class DateTimeValue(ValueType):
         return dt
 
 
-class DateValue(DateTimeValue):
+class Date(DateTimeValue):
     """ Date """
 
     def serialize(self, value):
@@ -74,22 +64,5 @@ class DateValue(DateTimeValue):
         return value.isoformat() if isinstance(value, date) else value
 
     def deserialize(self, value):
-        dt = super(DateValue, self).deserialize(value)
+        dt = super(Date, self).deserialize(value)
         return dt.date() if isinstance(dt, datetime) else dt
-
-
-class TypeValue(ValueType):
-    """ Type """
-
-    def serialize(self, value):
-        if hasattr(value, 'name'):
-            return value.name
-        return value
-
-    def deserialize(self, value):
-        if isinstance(value, Type):
-            return value
-        type_ = self.registry.get(value)
-        if type_ is None:
-            raise TypeException(self, value, message='Unknown entity type.')
-        return type_

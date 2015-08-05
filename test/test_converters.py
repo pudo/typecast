@@ -4,7 +4,7 @@ from datetime import datetime
 from typecast import create_registry, TypeException
 
 
-class ValueTypesUnitTest(unittest.TestCase):
+class ConvertersUnitTest(unittest.TestCase):
 
     def setUp(self):
         self.registry = create_registry()
