@@ -5,7 +5,6 @@ class Converter(object):
     """ A type converter for a primitive value (such as a string or a
     number). """
     result_type = None
-    allow_empty = False
 
     def _stringify(self, value, **opts):
         return six.text_type(value)
@@ -16,13 +15,15 @@ class Converter(object):
     def _is_null(self, value):
         """ Check if an incoming value is ``None`` or the empty string. """
         if isinstance(value, six.string_types):
-            if '' == value.strip() and not self.allow_empty:
+            if '' == value.strip():
                 return True
         return value is None
 
     def cast(self, value, **opts):
         """ Convert the given value to the target type, or return ``None`` if
         the value is empty. If an error occurs, raise a ``ConverterError``. """
+        if isinstance(value, self.result_type):
+            return value
         if self._is_null(value):
             return None
         try:

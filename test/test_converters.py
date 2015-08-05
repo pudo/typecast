@@ -34,6 +34,7 @@ class ConvertersUnitTest(unittest.TestCase):
         num, text = 2.1, '2.1'
         assert conv.stringify(num) == text, conv.stringify(num)
         assert conv.cast(text) == num, conv.cast(text)
+        assert conv.cast(num) == num, conv.cast(num)
 
         with self.assertRaises(ConverterError):
             conv.cast('banana')
