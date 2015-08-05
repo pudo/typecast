@@ -22,7 +22,24 @@ using the library could look like this:
 ```python
 import typecast
 
+type_name = 'date'
+value = '2031-01-05'
+converted = typecast.cast(type_name, value)
+assert converted.year == 2031
+
+other = typecast.stringify(type_name, converted)
+assert value == other
 ```
+
+The supported type names are:
+
+* ``string``, ``text``
+* ``number``, ``integer``
+* ``float``
+* ``decimal``
+* ``date``
+* ``datetime``
+* ``boolean``, ``bool``
 
 ## Tests
 
