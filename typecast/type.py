@@ -1,11 +1,23 @@
-from typesystem.util import SchemaObject, TypeException
+from typecast.util import TypeException
+
+
+class SchemaObject(object):
+
+    def __init__(self, name, label, abstract=False):
+        self.name = name
+        self.label = label or name
+
+    def __eq__(self, other):
+        if self.name == other:
+            return True
+        if hasattr(other, 'name') and self.name == other.name:
+            return True
+        return False
 
 
 class Type(SchemaObject):
     """ A type can be a primitive value (such as a string or a number) or a
     complex object, such as the data structure for a company or person. """
-    is_entity = False
-    is_value = False
 
     def __init__(self, registry, name, data):
         self.registry = registry

@@ -1,6 +1,7 @@
 from datetime import datetime, date
-from typesystem.util import date_parse, bool_parse, TypeException
-from typesystem.type import Type
+
+from typecast.util import date_parse, bool_parse, TypeException
+from typecast.type import Type
 
 
 class ValueType(Type):

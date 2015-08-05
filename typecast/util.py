@@ -1,4 +1,5 @@
 import dateutil.parser
+
 from normality import normalize
 
 
@@ -10,45 +11,11 @@ def date_parse(text):
 
 
 def bool_parse(text):
-    return text.lower().strip() in ['t', 'yes', 'y', '1', 'true']
+    return normalize(text) in ['t', 'yes', 'y', '1', 'true', 'aye']
 
 
 def is_list(obj):
     return isinstance(obj, (list, tuple, set))
-
-
-class SchemaObject(object):
-
-    def __init__(self, name, label, abstract=False):
-        self.name = name
-        self.label = label or name
-        self.abstract = abstract
-
-    def __eq__(self, other):
-        if self.name == other:
-            return True
-        if hasattr(other, 'name') and self.name == other.name:
-            return True
-        return False
-
-    def match_prefix(self, prefix):
-        prefix = normalize(prefix)
-        if not self.abstract:
-            if normalize(self.name).startswith(prefix):
-                return True
-            elif normalize(self.label).startswith(prefix):
-                return True
-        return False
-
-    def to_dict(self):
-        return {
-            'name': self.name,
-            'label': self.label,
-            'abstract': self.abstract
-        }
-
-    def to_index_dict(self):
-        return self.name
 
 
 class TypeException(Exception):
