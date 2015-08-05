@@ -1,5 +1,9 @@
 # typecast
 
+[![Build Status](https://travis-ci.org/pudo/typecast.svg?branch=master)](https://travis-ci.org/pudo/typecast)
+[![Coverage Status](https://coveralls.io/repos/pudo/typecast/badge.svg?branch=master&service=github)](https://coveralls.io/github/pudo/typecast?branch=master)
+
+
 This light-weight library contains a set of type converters commonly used to
 parse string-typed values into more specific types, such as numbers, booleans
 or dates. A typical use case might be converting values from HTTP query strings
