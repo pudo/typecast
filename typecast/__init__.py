@@ -43,10 +43,10 @@ def stringify(type_name, value, **opts):
     return converter(type_name).stringify(value, **opts)
 
 
-def configs():
+def instances():
     """ Yield a set of possible configurations for the various types. This can
     be used to perform type-guessing by checking the applicability of each
     converter against a set of sample data. """
     for converter in CONVERTERS:
-        for (inst, opts) in converter.configs():
-            yield (inst, opts)
+        for inst in converter.instances():
+            yield inst

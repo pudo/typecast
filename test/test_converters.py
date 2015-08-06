@@ -21,12 +21,22 @@ class ConvertersUnitTest(unittest.TestCase):
 
     def test_converter(self):
         conv1, conv2, conv3 = value.String(), value.String(), value.Integer()
+        dateconv = date.Date(format='%Y-%m-%d')
         assert conv1 == conv2
         assert conv2 != conv3
         assert repr(conv1) == repr(conv2)
+        assert '%Y' in repr(dateconv)
+        assert dateconv != date.Date()
+
+    def test_cast_test(self):
+        conv = value.Integer()
+        assert conv.test(1) == 1
+        assert conv.test('45454') == 1
+        assert conv.test('45454djksdfj') == -1
+        assert conv.test(None) == 0
 
     def test_configs(self):
-        configs = list(typecast.configs())
+        configs = list(typecast.instances())
         lens = len(typecast.CONVERTERS) - 3 + len(date.Date.formats) + \
             len(date.DateTime.formats)
         assert len(configs) == lens, (len(configs), lens)

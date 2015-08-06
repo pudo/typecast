@@ -2,7 +2,6 @@ import six
 import sys
 import decimal
 import locale
-from datetime import datetime, date
 
 from typecast.converter import Converter, ConverterError
 
@@ -19,14 +18,14 @@ class Integer(Converter):
 
     def _cast(self, value, **opts):
         try:
-            value = float(value)
-        except:
-            return locale.atoi(value)
-
-        if value.is_integer():
+            if hasattr(value, 'is_integer') and not value.is_integer():
+                raise ConverterError('Invalid integer: %r' % value)
             return int(value)
-        else:
-            raise ConverterError('Invalid integer: %r' % value)
+        except:
+            try:
+                return locale.atoi(value)
+            except:
+                raise ConverterError('Invalid integer: %r' % value)
 
 
 class Boolean(Converter):
@@ -60,7 +59,7 @@ class Float(Converter):
         return float(value)
 
     @classmethod
-    def configs(cls):
+    def instances(cls):
         # We don't want floats to be considered for type-testing, instead
         # use decimals (which are more conservative as a storage mechanism).
         return ()

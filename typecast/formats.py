@@ -1,3 +1,31 @@
+import re
+
+DATE_REGEXES = {}
+
+
+def sub_regex(match):
+    char = match.group(1)
+    if char in ['H', 'M', 'S', 'm', 'd', 'y']:
+        return '\d{1,2}'
+    if char in ['Y']:
+        return '\d{4}'
+    if char in ['z', 'b', 'B', 'Z']:
+        return '\w{0,100}'
+    if char in ['X']:
+        return '[\d:]{0,10}'
+    raise TypeError()
+
+
+def format_regex(format):
+    if format not in DATE_REGEXES and format is not None:
+        try:
+            format_re = re.sub(r'([\.\-])', r'\\\1', format)
+            format_re = re.sub('%(.)', sub_regex, format_re)
+            DATE_REGEXES[format] = re.compile(format_re)
+        except TypeError:
+            DATE_REGEXES[format] = None
+    return DATE_REGEXES.get(format)
+
 
 def create_date_formats():
     """ Generate combinations of time and date formats with different

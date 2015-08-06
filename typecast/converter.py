@@ -6,6 +6,9 @@ class Converter(object):
     number). """
     result_type = None
 
+    def __init__(self):
+        self.opts = {}
+
     def _stringify(self, value, **opts):
         return six.text_type(value)
 
@@ -19,6 +22,13 @@ class Converter(object):
                 return True
         return value is None
 
+    def test(self, value):
+        try:
+            out = self.cast(value)
+            return 0 if out is None else 1
+        except ConverterError:
+            return -1
+
     def cast(self, value, **opts):
         """ Convert the given value to the target type, or return ``None`` if
         the value is empty. If an error occurs, raise a ``ConverterError``. """
@@ -27,7 +37,9 @@ class Converter(object):
         if self._is_null(value):
             return None
         try:
-            return self._cast(value, **opts)
+            opts_ = self.opts.copy()
+            opts_.update(opts)
+            return self._cast(value, **opts_)
         except Exception, e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)
@@ -40,7 +52,9 @@ class Converter(object):
         if self._is_null(value):
             return None
         try:
-            return self._stringify(value, **opts)
+            opts_ = self.opts.copy()
+            opts_.update(opts)
+            return self._stringify(value, **opts_)
         except Exception, e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)
@@ -48,8 +62,8 @@ class Converter(object):
             raise e
 
     @classmethod
-    def configs(cls):
-        yield cls(), {}
+    def instances(cls):
+        yield cls()
 
     def __eq__(self, other):
         return self.__class__ == other.__class__
