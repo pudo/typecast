@@ -59,6 +59,12 @@ class Float(Converter):
     def _cast(self, value, **opts):
         return float(value)
 
+    @classmethod
+    def configs(cls):
+        # We don't want floats to be considered for type-testing, instead
+        # use decimals (which are more conservative as a storage mechanism).
+        return ()
+
 
 class Decimal(Converter):
     """ Decimal number, ``decimal.Decimal`` or float numbers. """

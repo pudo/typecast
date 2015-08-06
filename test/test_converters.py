@@ -2,6 +2,7 @@ import unittest
 import decimal
 from datetime import datetime
 
+import typecast
 from typecast import ConverterError
 from typecast import value, date
 
@@ -10,6 +11,25 @@ class ConvertersUnitTest(unittest.TestCase):
 
     def setUp(self):
         pass
+
+    def test_utils(self):
+        conv = value.String()
+        assert type(typecast.converter('string')) == type(conv), \
+            typecast.converter('string')
+        assert typecast.cast('string', 'foo') == 'foo'
+        assert typecast.stringify('number', 7) == '7'
+
+    def test_converter(self):
+        conv1, conv2, conv3 = value.String(), value.String(), value.Integer()
+        assert conv1 == conv2
+        assert conv2 != conv3
+        assert repr(conv1) == repr(conv2)
+
+    def test_configs(self):
+        configs = list(typecast.configs())
+        lens = len(typecast.CONVERTERS) - 3 + len(date.Date.formats) + \
+            len(date.DateTime.formats)
+        assert len(configs) == lens, (len(configs), lens)
 
     def test_none(self):
         conv = value.String()

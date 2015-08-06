@@ -47,6 +47,16 @@ class Converter(object):
             e.converter = self.__class__
             raise e
 
+    @classmethod
+    def configs(cls):
+        yield cls(), {}
+
+    def __eq__(self, other):
+        return self.__class__ == other.__class__
+
+    def __hash__(self):
+        return hash(self.__class__)
+
     def __repr__(self):
         return '<%s()>' % self.__class__.__name__
 
