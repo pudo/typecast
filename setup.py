@@ -34,7 +34,8 @@ setup(
     ],
     tests_require=[
         'nose',
-        'coverage'
+        'coverage',
+        'wheel'
     ],
     entry_points={}
 )
