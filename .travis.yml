@@ -7,8 +7,7 @@ before_install:
     - source ./pyenv/bin/activate
 install:
     - pip install -e .
-    - pip install nose coverage
-    - pip install python-dateutil coveralls unicodecsv
+    - pip install nose coverage python-dateutil coveralls unicodecsv
 before_script:
     - nosetests --version
 script:
