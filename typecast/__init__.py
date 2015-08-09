@@ -7,13 +7,14 @@ CONVERTERS = [String, Boolean, Integer, Float, Decimal, DateTime, Date]
 TYPES = {
     'string': String,
     'text': String,
-    'number': Integer,
     'integer': Integer,
+    'number': Float,
     'float': Float,
     'double': Float,
     'decimal': Decimal,
     'date': Date,
     'datetime': DateTime,
+    'date-time': DateTime,
     'boolean': Boolean,
     'bool': Boolean
 }
