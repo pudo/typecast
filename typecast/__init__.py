@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from typecast.value import String, Boolean, Integer, Float, Decimal
 from typecast.date import DateTime, Date
 from typecast.converter import ConverterError  # noqa
@@ -21,6 +23,15 @@ TYPES = {
 }
 
 
+def _field_options(field, opts):
+    if isinstance(field, dict):
+        _extra = opts
+        opts = deepcopy(field)
+        opts.update(_extra)
+        field = opts.get('type')
+    return field, opts
+
+
 def converter(type_name):
     """ Get a given converter by name, or raise an exception. """
     converter = TYPES.get(type_name)
@@ -35,6 +46,7 @@ def cast(type_name, value, **opts):
 
     Optional arguments can include ``true_values`` and ``false_values`` to
     describe boolean types, and ``format`` for dates. """
+    type_name, opts = _field_options(type_name, opts)
     return converter(type_name).cast(value, **opts)
 
 
@@ -42,6 +54,7 @@ def stringify(type_name, value, **opts):
     """ Generate a string representation of the data in ``value`` based on the
     converter specified by ``type_name``. This is guaranteed to yield a form
     which can easily be parsed by ``cast()``. """
+    type_name, opts = _field_options(type_name, opts)
     return converter(type_name).stringify(value, **opts)
 
 

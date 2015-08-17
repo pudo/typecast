@@ -14,7 +14,8 @@ class ConvertersUnitTest(unittest.TestCase):
 
     def test_utils(self):
         conv = value.String()
-        assert type(typecast.converter('string')) == type(conv), \
+        conv2 = typecast.converter('string')
+        assert type(conv2) == type(conv), \
             typecast.converter('string')
         assert typecast.cast('string', 'foo') == 'foo'
         assert typecast.stringify('number', 7) == '7'
@@ -27,6 +28,21 @@ class ConvertersUnitTest(unittest.TestCase):
         assert repr(conv1) == repr(conv2)
         assert '%Y' in repr(dateconv)
         assert dateconv != date.Date()
+
+    def test_date_utils(self):
+        dateconv = date.Date(format='%Y-%m-%d')
+        dateconv2 = date.Date(format='%Y-%m-%d')
+        dateconv3 = date.Date(format='%Y-%mZZ%d')
+        assert dateconv == dateconv2
+        assert dateconv != dateconv3
+        assert not dateconv2.test('huhu')
+        assert dateconv2.test('2009-01-12')
+
+    def test_jts_spec(self):
+        field = {'type': 'date', 'format': '%Y!%m!%d'}
+        out = typecast.cast(field, '2009!04!12')
+        assert out.year == 2009, out
+        assert out.day == 12, out
 
     def test_cast_test(self):
         conv = value.Integer()
