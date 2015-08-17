@@ -40,7 +40,7 @@ class Converter(object):
             opts_ = self.opts.copy()
             opts_.update(opts)
             return self._cast(value, **opts_)
-        except Exception, e:
+        except Exception as e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)
             e.converter = self.__class__
@@ -55,7 +55,7 @@ class Converter(object):
             opts_ = self.opts.copy()
             opts_.update(opts)
             return self._stringify(value, **opts_)
-        except Exception, e:
+        except Exception as e:
             if not isinstance(e, ConverterError):
                 e = ConverterError(None, exc=e)
             e.converter = self.__class__

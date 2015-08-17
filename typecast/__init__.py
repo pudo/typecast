@@ -5,6 +5,7 @@ from typecast.converter import ConverterError  # noqa
 CONVERTERS = [String, Boolean, Integer, Float, Decimal, DateTime, Date]
 
 TYPES = {
+    'any': String,
     'string': String,
     'text': String,
     'integer': Integer,
