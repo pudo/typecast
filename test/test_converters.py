@@ -4,7 +4,7 @@ from datetime import datetime
 
 import typecast
 from typecast import ConverterError
-from typecast import value, date
+from typecast import value, date, formats
 
 
 class ConvertersUnitTest(unittest.TestCase):
@@ -35,7 +35,7 @@ class ConvertersUnitTest(unittest.TestCase):
         dateconv3 = date.Date(format='%Y-%mZZ%d')
         assert dateconv == dateconv2
         assert dateconv != dateconv3
-        assert not dateconv2.test('huhu')
+        assert dateconv2.test('huhu') == -1
         assert dateconv2.test('2009-01-12')
 
     def test_jts_spec(self):
@@ -72,6 +72,13 @@ class ConvertersUnitTest(unittest.TestCase):
     def test_integer(self):
         conv = value.Integer()
         num, text = 7842, '7842'
+        assert conv.stringify(num) == text, conv.stringify(num)
+        assert conv.cast(text) == num, conv.cast(text)
+
+    def test_integer_null(self):
+        conv = value.Integer()
+        num, text = 0, '0'
+        assert conv.test('0') == 1
         assert conv.stringify(num) == text, conv.stringify(num)
         assert conv.cast(text) == num, conv.cast(text)
 
@@ -131,3 +138,10 @@ class ConvertersUnitTest(unittest.TestCase):
 
         with self.assertRaises(ConverterError):
             conv.cast('banana')
+
+    def test_formats_regex(self):
+        regex = formats.format_regex('%Y-%m-%d')
+        assert regex.match('2012-01-04')
+        assert date.Date().test('2012-01-04') == 1
+        assert date.Date(format='%Y-%m-%d').test('2012-01-02') == 1
+        assert date.Date().test('2012-01-x04') == -1
