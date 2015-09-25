@@ -23,7 +23,7 @@ class Integer(Converter):
             return int(value)
         except:
             try:
-                return locale.atoi(value)
+                return int(locale.atoi(value))
             except:
                 raise ConverterError('Invalid integer: %r' % value)
 

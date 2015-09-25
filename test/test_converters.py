@@ -139,6 +139,18 @@ class ConvertersUnitTest(unittest.TestCase):
         with self.assertRaises(ConverterError):
             conv.cast('banana')
 
+    def test_datetime_formats(self):
+        conv = date.DateTime()
+        dt = conv.cast('6/16/99 0:00')
+        assert dt is not None, dt
+        assert dt.year == 1999, dt
+
+        regex = formats.format_regex('%m/%d/%y %H:%M')
+        m = regex.match('6/16/99 0:00')
+        assert m is not None, m
+        m = regex.match('6/16/1999 0:00')
+        assert m is None, m
+
     def test_formats_regex(self):
         regex = formats.format_regex('%Y-%m-%d')
         assert regex.match('2012-01-04')
