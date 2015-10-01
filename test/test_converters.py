@@ -12,6 +12,14 @@ class ConvertersUnitTest(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_name(self):
+        n = typecast.name('string')
+        assert n == 'string', n
+        n = typecast.name(7)
+        assert n == 'integer', n
+        n = typecast.name(False)
+        assert n == 'bool', n
+
     def test_utils(self):
         conv = value.String()
         conv2 = typecast.converter('string')

@@ -3,6 +3,7 @@ from copy import deepcopy
 from typecast.value import String, Boolean, Integer, Float, Decimal
 from typecast.date import DateTime, Date
 from typecast.converter import ConverterError  # noqa
+from typecast.name import name  # noqa
 
 CONVERTERS = [String, Boolean, Integer, Float, Decimal, DateTime, Date]
 
