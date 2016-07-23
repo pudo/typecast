@@ -12,6 +12,7 @@ class DateTime(Converter):
     """Convert a timestamp."""
 
     result_type = datetime
+    jts_name = 'datetime'
     guess_score = 5
     formats = DATETIME_FORMATS
 
@@ -67,6 +68,7 @@ class Date(DateTime):
     """Convert a date."""
 
     result_type = date
+    jts_name = 'date'
     guess_score = 4
     formats = DATE_FORMATS
 
