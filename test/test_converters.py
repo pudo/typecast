@@ -105,6 +105,9 @@ class ConvertersUnitTest(unittest.TestCase):
         num, text = decimal.Decimal(2.1), '2.1'
         assert float(conv.stringify(num)) == float(text), conv.stringify(num)
         val = float(conv.cast(text) - num)
+        assert conv.test(text) == 1, text
+        assert conv.test(num) == 1, text
+        assert conv.test('banana') == -1, text
         assert val < 0.1, (conv.cast(text), val)
 
         with self.assertRaises(ConverterError):

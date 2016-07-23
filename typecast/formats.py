@@ -16,15 +16,15 @@ def sub_regex(match):
     raise TypeError()
 
 
-def format_regex(format):
-    if format not in DATE_REGEXES and format is not None:
-        try:
-            format_re = re.sub(r'([\.\-])', r'\\\1', format)
-            format_re = re.sub('%(.)', sub_regex, format_re)
-            DATE_REGEXES[format] = re.compile(format_re)
-        except TypeError:
-            DATE_REGEXES[format] = None
-    return DATE_REGEXES.get(format)
+def make_regex(fmt):
+    format_re = re.sub(r'([\.\-])', r'\\\1', fmt)
+    return re.sub('%(.)', sub_regex, format_re)
+
+
+def format_regex(fmt):
+    if fmt not in DATE_REGEXES and fmt is not None:
+        DATE_REGEXES[fmt] = re.compile(make_regex(fmt))
+    return DATE_REGEXES.get(fmt)
 
 
 def create_date_formats():

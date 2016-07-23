@@ -18,6 +18,7 @@ class DateTime(Converter):
         self.format = format
 
     def test(self, value):
+        """Apply the regex for this format."""
         if isinstance(value, six.string_types):
             if not len(value.strip()):
                 return 0
