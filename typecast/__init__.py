@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from typecast.value import String, Boolean, Integer, Float, Decimal
 from typecast.date import DateTime, Date
+from typecast.guess import TypeGuesser, GUESS_TYPES
 from typecast.converter import ConverterError  # noqa
 from typecast.name import name  # noqa
 
@@ -71,3 +72,8 @@ def instances():
     for converter in CONVERTERS:
         for inst in converter.instances():
             yield inst
+
+
+def guesser(types=GUESS_TYPES, strict=False):
+    """Create a type guesser for multiple values."""
+    return TypeGuesser(types=types, strict=strict)

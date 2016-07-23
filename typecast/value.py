@@ -11,6 +11,7 @@ class String(Converter):
     """String."""
 
     result_type = six.text_type
+    guess_score = 1
     allow_empty = True
 
 
@@ -18,6 +19,7 @@ class Integer(Converter):
     """Integer."""
 
     result_type = int
+    guess_score = 6
 
     def _cast(self, value, **opts):
         try:
@@ -39,6 +41,7 @@ class Boolean(Converter):
     """
 
     result_type = bool
+    guess_score = 7
     true_values = ('t', 'yes', 'y', 'true', 'aye')
     false_values = ('f', 'no', 'n', 'false', 'nay')
 
@@ -62,6 +65,7 @@ class Float(Converter):
     """Floating-point number."""
 
     result_type = float
+    guess_score = 3
 
     def _cast(self, value, **opts):
         return float(value)
@@ -76,19 +80,20 @@ class Float(Converter):
 class Decimal(Converter):
     """Decimal number, ``decimal.Decimal`` or float numbers."""
 
+    result_type = decimal.Decimal
+    guess_score = 3
     pattern = r'\s*[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?\s*'
     pattern = re.compile(pattern, re.M)
-    result_type = decimal.Decimal
 
-    def test(self, value):
-        """Check if this is a decimal."""
-        if self._is_null(value):
-            return 0
-        if isinstance(value, (int, float, decimal.Decimal)):
-            return 1
-        if self.pattern.match(value) is not None:
-            return 1
-        return -1
+    # def test(self, value):
+    #     """Check if this is a decimal."""
+    #     if self._is_null(value):
+    #         return 0
+    #     if isinstance(value, (int, float, decimal.Decimal)):
+    #         return 1
+    #     if self.pattern.match(value) is not None:
+    #         return 1
+    #     return -1
 
     def _stringify(self, value, **opts):
         return '{0:.7f}'.format(value)

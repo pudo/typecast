@@ -18,7 +18,7 @@ class Converter(object):
     def _is_null(self, value):
         """Check if an incoming value is ``None`` or the empty string."""
         if isinstance(value, six.string_types):
-            if '' == value.strip():
+            if not len(value.strip()):
                 return True
         return value is None
 

@@ -11,6 +11,7 @@ class DateTime(Converter):
     """Convert a timestamp."""
 
     result_type = datetime
+    guess_score = 5
     formats = DATETIME_FORMATS
 
     def __init__(self, format=None):
@@ -57,6 +58,7 @@ class Date(DateTime):
     """Convert a date."""
 
     result_type = date
+    guess_score = 4
     formats = DATE_FORMATS
 
     def _stringify(self, value, **opts):
