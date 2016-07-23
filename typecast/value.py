@@ -32,8 +32,8 @@ class Boolean(Converter):
     """ A boolean field. Matches true/false, yes/no and 0/1 by default,
     but a custom set of values can be optionally provided. """
     result_type = bool
-    true_values = ('1', 't', 'yes', 'y', 'true', 'aye')
-    false_values = ('0', 'f', 'no', 'n', 'false', 'nay')
+    true_values = ('t', 'yes', 'y', 'true', 'aye')
+    false_values = ('f', 'no', 'n', 'false', 'nay')
 
     def _stringify(self, value, **opts):
         return six.text_type(value).lower()
