@@ -29,6 +29,13 @@ class Converter(object):
         except ConverterError:
             return -1
 
+    @classmethod
+    def test_class(cls, value):
+        # This is a work-around to the date checker generating too many
+        # tests because of the many formats. Instead, we're running one
+        # big regex first, then do detailed checks.
+        return True
+
     def cast(self, value, **opts):
         """Convert the given value to the target type.
 

@@ -1,9 +1,10 @@
+import re
 import six
 import dateutil.parser
 from datetime import datetime, date
 
 from typecast.formats import DATE_FORMATS, DATETIME_FORMATS
-from typecast.formats import format_regex
+from typecast.formats import format_regex, make_regex
 from typecast.converter import Converter
 
 
@@ -36,6 +37,15 @@ class DateTime(Converter):
         if format is not None:
             return datetime.strptime(value, format)
         return dateutil.parser.parse(value)
+
+    @classmethod
+    def test_class(cls, value):
+        if not hasattr(cls, '_formats_re'):
+            formats = [make_regex(f) for f in cls.formats]
+            formats = '|'.join(formats)
+            print formats
+            cls._formats_re = re.compile('(%s)' % formats)
+        return cls._formats_re.match(value) is not None
 
     @classmethod
     def instances(cls):

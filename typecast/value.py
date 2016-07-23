@@ -85,16 +85,6 @@ class Decimal(Converter):
     pattern = r'\s*[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?\s*'
     pattern = re.compile(pattern, re.M)
 
-    # def test(self, value):
-    #     """Check if this is a decimal."""
-    #     if self._is_null(value):
-    #         return 0
-    #     if isinstance(value, (int, float, decimal.Decimal)):
-    #         return 1
-    #     if self.pattern.match(value) is not None:
-    #         return 1
-    #     return -1
-
     def _stringify(self, value, **opts):
         return '{0:.7f}'.format(value)
 

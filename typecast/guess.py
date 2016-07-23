@@ -15,18 +15,23 @@ class TypeGuesser(object):
     def __init__(self, types=GUESS_TYPES, strict=False):
         self.scores = defaultdict(int)
         self.instances = [i for t in types for i in t.instances()]
-        print self.instances[:10]
         self.strict = strict
 
     def add(self, value):
         if self.default._is_null(value):
             return
+        classes = {}
         for inst in self.instances:
-            if self.scores[inst] is FAILED:
+            cls = type(inst)
+            if cls not in classes:
+                classes[cls] = inst.test_class(value)
+            if self.scores[inst] is FAILED or not classes[cls]:
                 continue
+
             result = inst.test(value)
-            if self.strict and (result == -1) and not isinstance(inst, String):
-                self.scores[inst] = FAILED
+            if self.strict and (result == -1):
+                if not isinstance(inst, String):
+                    self.scores[inst] = FAILED
             elif result == 1:
                 self.scores[inst] += inst.guess_score
 
