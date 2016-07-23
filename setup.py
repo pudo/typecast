@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='typecast',
-    version='0.3.1',
+    version='0.3.2',
     description="Convert types in source data.",
     long_description="",
     classifiers=[

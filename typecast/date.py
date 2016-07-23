@@ -43,7 +43,6 @@ class DateTime(Converter):
         if not hasattr(cls, '_formats_re'):
             formats = [make_regex(f) for f in cls.formats]
             formats = '|'.join(formats)
-            print formats
             cls._formats_re = re.compile('(%s)' % formats)
         return cls._formats_re.match(value) is not None
 
