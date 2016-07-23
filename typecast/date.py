@@ -8,7 +8,8 @@ from typecast.converter import Converter
 
 
 class DateTime(Converter):
-    """ Timestamp """
+    """Convert a timestamp."""
+
     result_type = datetime
     formats = DATETIME_FORMATS
 
@@ -18,7 +19,7 @@ class DateTime(Converter):
 
     def test(self, value):
         if isinstance(value, six.string_types):
-            if len(value.strip()) == 0:
+            if not len(value.strip()):
                 return 0
             if format_regex(self.format):
                 match = format_regex(self.format).match(value)
@@ -29,7 +30,7 @@ class DateTime(Converter):
         return value.isoformat()
 
     def _cast(self, value, format=None, **opts):
-        """ Optionally apply a format string. """
+        """Optionally apply a format string."""
         if format is not None:
             return datetime.strptime(value, format)
         return dateutil.parser.parse(value)
@@ -52,7 +53,8 @@ class DateTime(Converter):
 
 
 class Date(DateTime):
-    """ Date """
+    """Convert a date."""
+
     result_type = date
     formats = DATE_FORMATS
 
