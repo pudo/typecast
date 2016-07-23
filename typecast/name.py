@@ -13,8 +13,11 @@ TESTS = ((six.text_type, 'string'),
 
 
 def name(value):
-    """ Given a value, get an appropriate string title for the type that can
-    be used to re-cast the value later. """
+    """Get the string title for a particular type.
+
+    Given a value, get an appropriate string title for the type that can
+    be used to re-cast the value later.
+    """
     if value is None:
         return 'any'
     for (test, name) in TESTS:

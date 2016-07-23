@@ -7,13 +7,15 @@ from typecast.converter import Converter, ConverterError
 
 
 class String(Converter):
-    """ String """
+    """String."""
+
     result_type = six.text_type
     allow_empty = True
 
 
 class Integer(Converter):
-    """ Integer """
+    """Integer."""
+
     result_type = int
 
     def _cast(self, value, **opts):
@@ -29,8 +31,12 @@ class Integer(Converter):
 
 
 class Boolean(Converter):
-    """ A boolean field. Matches true/false, yes/no and 0/1 by default,
-    but a custom set of values can be optionally provided. """
+    """A boolean field.
+
+    Matches true/false, yes/no and 0/1 by default,
+    but a custom set of values can be optionally provided.
+    """
+
     result_type = bool
     true_values = ('t', 'yes', 'y', 'true', 'aye')
     false_values = ('f', 'no', 'n', 'false', 'nay')
@@ -52,7 +58,8 @@ class Boolean(Converter):
 
 
 class Float(Converter):
-    """ Floating-point number """
+    """Floating-point number."""
+
     result_type = float
 
     def _cast(self, value, **opts):
@@ -66,7 +73,8 @@ class Float(Converter):
 
 
 class Decimal(Converter):
-    """ Decimal number, ``decimal.Decimal`` or float numbers. """
+    """Decimal number, ``decimal.Decimal`` or float numbers."""
+
     result_type = decimal.Decimal
 
     def _stringify(self, value, **opts):

@@ -2,8 +2,8 @@ import six
 
 
 class Converter(object):
-    """ A type converter for a primitive value (such as a string or a
-    number). """
+    """A type converter for a value (such as a string or a number)."""
+
     result_type = None
 
     def __init__(self):
@@ -16,7 +16,7 @@ class Converter(object):
         return six.text_type(value)
 
     def _is_null(self, value):
-        """ Check if an incoming value is ``None`` or the empty string. """
+        """Check if an incoming value is ``None`` or the empty string."""
         if isinstance(value, six.string_types):
             if '' == value.strip():
                 return True
@@ -30,8 +30,11 @@ class Converter(object):
             return -1
 
     def cast(self, value, **opts):
-        """ Convert the given value to the target type, or return ``None`` if
-        the value is empty. If an error occurs, raise a ``ConverterError``. """
+        """Convert the given value to the target type.
+
+        Return ``None`` if the value is empty. If an error occurs,
+        raise a ``ConverterError``.
+        """
         if isinstance(value, self.result_type):
             return value
         if self._is_null(value):
@@ -47,8 +50,11 @@ class Converter(object):
             raise e
 
     def stringify(self, value, **opts):
-        """ Inverse of conversion: generate a string representation of the data
-        that is guaranteed to be parseable by this library. """
+        """Generate a string representation of the data.
+
+        Inverse of conversion: generate a string representation of the data
+        that is guaranteed to be parseable by this library.
+        """
         if self._is_null(value):
             return None
         try:
@@ -79,8 +85,10 @@ class Converter(object):
 
 
 class ConverterError(TypeError):
-    """ An exception wrapper for all errors occuring in the process of
-    conversion. This can also be caught as a ``TypeError``. """
+    """A wrapper for all errors occuring in the process of conversion.
+
+    This can also be caught as a ``TypeError``.
+    """
 
     def __init__(self, message, exc=None, converter=None):
         self.converter = converter

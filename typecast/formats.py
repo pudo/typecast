@@ -28,8 +28,7 @@ def format_regex(format):
 
 
 def create_date_formats():
-    """ Generate combinations of time and date formats with different
-    delimeters. """
+    """Generate time and date formats with different delimeters."""
     # European style:
     base_formats = ['%d %m %Y', '%d %m %y', '%Y %m %d']
     # US style:
